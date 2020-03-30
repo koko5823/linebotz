@@ -14,7 +14,7 @@ pycparser==2.14
 python-editor==1.0.3  
 requests==2.12.4
 webassets==0.12.0
-Werkzeug==0.11.15     
+Werkzeug==0.15.3     
 gunicorn==19.6.0
 beautifulsoup4==4.5.3
 line-bot-sdk==1.5.0
