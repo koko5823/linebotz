@@ -97,3 +97,6 @@ webhook
     data = clock_check(event.postback.data)
     line_bot_api.reply_message(event.reply_token,TemplateSendMessage(alt_text="Carousel Template Example",           template=carousel_template))
     line_bot_api.reply_message(event.reply_token,TextSendMessage("距離預約時間還有",str(data)))
+
+##最新科技
+
