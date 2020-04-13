@@ -99,7 +99,15 @@ webhook
     line_bot_api.reply_message(event.reply_token,TemplateSendMessage(alt_text="Carousel Template Example",           template=carousel_template))
     line_bot_api.reply_message(event.reply_token,TextSendMessage("距離預約時間還有",str(data)))
 
-##最新科技
-   
-currently issue
+## newest technology
+
+# 2020/4/13 Note
+
+# currently issue
+
+# 1
+    the time of clock is the complete with line bot API , next we have to spilt time and compare to local time to give a user               reservation time . 
+# 2
+    expect tool , the location of pharmercy searcher . Use LocationSendMessage API collect user location.
+ 
     
