@@ -109,6 +109,8 @@ currently issue
 the time of clock is the complete with line bot API , next we have to spilt time and compare to local time to give a user 
 reservation time . 
 # 2
-expect tool , the location of pharmercy searcher . Use LocationSendMessage API collect user location.
+expect tool , the location of pharmercy searcher . Use LocationSendMessage API collect user location. Medicine-taking nofication by 
+alarm.
+
  
     
