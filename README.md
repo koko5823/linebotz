@@ -1,4 +1,5 @@
 # linebotz
+API https://github.com/line/line-bot-sdk-python/blob/master/examples/flask-kitchensink/app.py
 ---------------------------------------------------------------------------------------------------------------------------------------
 # 2020/4/11 Note
 I found a linebot api about datetimepicker it mean the templete i make before is bullshit = =
