@@ -11,14 +11,14 @@ old code --->
 reservation time funcion
 
     def clock_check(time):
-    now = time.localtime()
-    print(now)
-    t = time.strftime("%H %M", now)
-    t = t.split(' ')
-    hour = int(t[0]) +8
-    minute = int(t[1])
-    local = str(hour)+str(minute)
-    settime = int(local)-int(time) #距離預約時間
+        now = time.localtime()
+        print(now)
+        t = time.strftime("%H %M", now)
+        t = t.split(' ')
+        hour = int(t[0]) +8
+        minute = int(t[1])
+        local = str(hour)+str(minute)
+        settime = int(local)-int(time) #距離預約時間
     return settime
  
  collect user statue
