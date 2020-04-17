@@ -12,7 +12,10 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage, TemplateSendMessage, CarouselTemplate, CarouselColumn, ButtonsTemplate, PostbackTemplateAction, MessageTemplateAction, URITemplateAction
+    MessageEvent, TextMessage, LocationMessage, TextSendMessage,
+    PostbackEvent, DatetimePickerTemplateAction,TemplateSendMessage,
+    CarouselTemplate, CarouselColumn, ButtonsTemplate, PostbackTemplateAction,
+    MessageTemplateAction, URITemplateAction, LocationSendMessage
 )
 mcsp = 'https://api.mediatek.com/mcs/v2/devices/DCo0m0wu/datapoints'
 mcsg = 'https://api.mediatek.com/mcs/v2/devices/DCo0m0wu/datachannels/SWITCH/datapoints'
@@ -38,6 +41,16 @@ def callback():
 
     return 'OK'
 
+def clock_check(time):
+    now = time.localtime()
+    print(now)
+    t = time.strftime("%H %M", now)
+    t = t.split(' ')
+    hour = int(t[0]) +8
+    minute = int(t[1])
+    local = str(hour)+str(minute)
+    settime = int(local)-int(time) #距離預約時間
+    return settime
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
@@ -51,7 +64,7 @@ def handle_message(event):
         str(hour)
         str(minute)
         print(hour , minute)
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(str(hour)+str(minute)))
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(str(hour)+":"+str(minute)))
 
 
     if event.message.text==u"開燈":
@@ -101,86 +114,56 @@ def handle_message(event):
 
     if event.message.text =="設定吃藥時間":
         image_url_1 = "https://i.imgur.com/hbthI4f.jpg"
-        image_url_2 = "https://i.imgur.com/hbthI4f.jpg"
-        click_link_1 = "https://www.facebook.com/ntustcc"
-        click_link_2 = "https://www.facebook.com/ntustcc"
-        carousel_template = template=CarouselTemplate(
+        carousel_template =CarouselTemplate(
             columns=[
                 CarouselColumn(
                     thumbnail_image_url=image_url_1,
                     title='早上吃藥時間',
                     text='早上',
                     actions=[
-                        MessageTemplateAction(
-                            label='早上7點',
-                            text='已幫您預約7點'
-                            int n = 1
+                        DatetimePickerTemplateAction(
+                            label='早上',
+                            mode='time',
+                            data='morning'
                         ),
-                        MessageTemplateAction(
-                            label='早上8點',
-                            text='已幫您預約8點'
+                        DatetimePickerTemplateAction(
+                            label='中午',
+                            mode='time',
+                            data='noon'
                         ),
-                        MessageTemplateAction(
-                            label='早上9點',
-                            text='已幫您預約9點'
+                            DatetimePickerTemplateAction(
+                            label='晚上',
+                            mode='time',
+                            data='night'
                         )
                     ]
                 ),
-                CarouselColumn(
-                    thumbnail_image_url=image_url_1,
-                    title='中午吃藥時間',
-                    text='中午',
-                    actions=[
-                        MessageTemplateAction(
-                            label='上午11點',
-                            text='已幫您預約11點'
-                        ),
-                        MessageTemplateAction(
-                            label='中午12點',
-                            text='已幫您預約12點'
-                        ),
-                        MessageTemplateAction(
-                            label='下午1點',
-                            text='已幫您預約下午1點'
-                        )
-                    ]
-                ),
-                CarouselColumn(
-                    thumbnail_image_url=image_url_2,
-                    title='晚上吃藥時間',
-                    text='晚上',
-                    actions=[
-                        MessageTemplateAction(
-                            label='下午5點',
-                            text='已幫您預約下午5點'
-                        ),
-                        MessageTemplateAction(
-                            label='下午6點',
-                            text='已幫您預約下午6點'
-                        ),
-                        MessageTemplateAction(
-                            label='下午7點',
-                            text='已幫您預約下午7點'
-
-                        )
-                    ]
-                )]
+                ]
             )
+        #data = clock_check(int(event.postback.data))
         line_bot_api.reply_message(event.reply_token,TemplateSendMessage(alt_text="Carousel Template Example", template=carousel_template))
-
-        if n==1
-            print(good)
-
-
-
-
-
-
+        #line_bot_api.reply_message(event.reply_token,TextSendMessage("距離預約時間還有",str(data)))
 
 
 
     else:
        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=event.message.text))
+
+@handler.add(PostbackEvent)
+def handle_postback(event):
+    if event.postback.data == 'morning':
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="已幫您預約"+event.postback.params['time']))
+        set = event.postback.params['time']
+
+@handler.add(MessageEvent, message=LocationMessage)
+def handle_location_message(event):
+    line_bot_api.reply_message(
+        event.reply_token,
+        LocationSendMessage(
+            title='你的位置', address=event.message.address,
+            latitude=event.message.latitude, longitude=event.message.longitude
+        )
+    )
 
 if __name__ == "__main__":
     app.run()
